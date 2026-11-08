@@ -14,6 +14,7 @@ class QPushButton;
 class QTextBrowser;
 class VideoWidget;
 class QComboBox;
+class QProgressBar;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -27,7 +28,10 @@ public slots:
     void showError(const QString& message);
     // 由装配层注入可选的硬件设备列表与当前选择
     void setMediaDevices(const QStringList& cameras, int cameraIndex,
-                         const QStringList& microphones, int micIndex);
+                         const QStringList& microphones, int micIndex,
+                         const QStringList& speakers, int speakerIndex);
+    // 音频电平（0.0~1.0），刷新输入/输出电平表
+    void setAudioLevels(double inputLevel, double outputLevel);
 
 signals:
     void loginRequested(const QString& host, quint16 port,
@@ -43,6 +47,7 @@ signals:
     void speakerMuteToggleRequested(bool muted);
     void cameraDeviceSelected(int index);
     void micDeviceSelected(int index);
+    void speakerDeviceSelected(int index);
 
 private slots:
     void onConnStateChanged();
@@ -87,6 +92,11 @@ private:
 
     QComboBox* cameraCombo_ = nullptr;
     QComboBox* micCombo_ = nullptr;
+    QComboBox* speakerCombo_ = nullptr;
+    QProgressBar* micLevelBar_ = nullptr;
+    QProgressBar* speakerLevelBar_ = nullptr;
+    QLabel* micLevelText_ = nullptr;
+    QLabel* speakerLevelText_ = nullptr;
     // 程序化填充下拉框时抑制 currentIndexChanged，避免误触发设备切换
     bool updatingDeviceCombos_ = false;
 

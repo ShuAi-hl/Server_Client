@@ -1,34 +1,34 @@
 reactor_client_autogen/timestamp: \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/CMakeLists.txt \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/maintenance_tool_provider.cmake \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/package-manager.cmake \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/qtcreator-project.cmake \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeSystem.cmake \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/moc_predefs.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/controller/AppController.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/controller/AppController.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/main.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/AppModel.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/AppModel.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/Protocol.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.h \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.cpp \
-	D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/CMakeLists.txt \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/maintenance_tool_provider.cmake \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/package-manager.cmake \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/qtcreator-project.cmake \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeSystem.cmake \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/moc_predefs.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/controller/AppController.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/controller/AppController.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/main.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/AppModel.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/AppModel.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/Protocol.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.h \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.cpp \
+	D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.h \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QByteArray \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QJsonArray \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QJsonObject \
@@ -37,6 +37,7 @@ reactor_client_autogen/timestamp: \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QMap \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QObject \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QString \
+	D:/Qt/6.11.1/mingw_64/include/QtCore/QStringList \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QTimer \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QVector \
 	D:/Qt/6.11.1/mingw_64/include/QtCore/QtGlobal \

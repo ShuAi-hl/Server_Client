@@ -10,6 +10,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QProgressBar>
 #include <QPushButton>
 #include <QScrollBar>
 #include <QShortcut>
@@ -124,7 +125,10 @@ void MainWindow::buildUi() {
     centerLayout->addWidget(localView_, 1);
     centerLayout->addWidget(remoteView_, 1);
 
-    // ---- 硬件设备选择：有多个摄像头 / 麦克风时在此切换 ----
+    // ---- 硬件设备选择：有多个设备时在此切换（第一行 摄像头/麦克风，第二行 扬声器）----
+    QVBoxLayout* deviceArea = new QVBoxLayout();
+    deviceArea->setSpacing(6);
+
     QHBoxLayout* deviceBar = new QHBoxLayout();
     deviceBar->setSpacing(8);
 
@@ -147,7 +151,63 @@ void MainWindow::buildUi() {
     deviceBar->addSpacing(6);
     deviceBar->addWidget(micLabel);
     deviceBar->addWidget(micCombo_, 1);
-    centerLayout->addLayout(deviceBar);
+    deviceArea->addLayout(deviceBar);
+
+    QHBoxLayout* speakerBar = new QHBoxLayout();
+    speakerBar->setSpacing(8);
+
+    QLabel* speakerLabel = new QLabel(QStringLiteral("扬声器"), center);
+    speakerLabel->setObjectName("caption");
+    speakerCombo_ = new QComboBox(center);
+    speakerCombo_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    speakerCombo_->setMinimumContentsLength(6);
+    speakerCombo_->setToolTip(QStringLiteral("选择用于播放远端语音的扬声器，切换后立即生效"));
+
+    QLabel* speakerHint = new QLabel(QStringLiteral("用于播放房间内其他人的声音"), center);
+    speakerHint->setObjectName("caption");
+
+    speakerBar->addWidget(speakerLabel);
+    speakerBar->addWidget(speakerCombo_, 1);
+    speakerBar->addSpacing(6);
+    speakerBar->addWidget(speakerHint, 0);
+    deviceArea->addLayout(speakerBar);
+
+    // ---- 音频电平检测：麦克风输入 / 扬声器输出（-60dB ~ 0dB）----
+    QHBoxLayout* levelBar = new QHBoxLayout();
+    levelBar->setSpacing(8);
+
+    micLevelBar_ = new QProgressBar(center);
+    micLevelBar_->setObjectName("levelMeter");
+    micLevelBar_->setRange(0, 100);
+    micLevelBar_->setValue(0);
+    micLevelBar_->setTextVisible(false);
+    micLevelBar_->setFixedHeight(10);
+    micLevelBar_->setToolTip(QStringLiteral("麦克风采集到的实时音量"));
+
+    micLevelText_ = new QLabel(QStringLiteral("输入 静音"), center);
+    micLevelText_->setObjectName("caption");
+    micLevelText_->setMinimumWidth(74);
+
+    speakerLevelBar_ = new QProgressBar(center);
+    speakerLevelBar_->setObjectName("levelMeter");
+    speakerLevelBar_->setRange(0, 100);
+    speakerLevelBar_->setValue(0);
+    speakerLevelBar_->setTextVisible(false);
+    speakerLevelBar_->setFixedHeight(10);
+    speakerLevelBar_->setToolTip(QStringLiteral("正在播放的远端音频音量（含本机静音状态）"));
+
+    speakerLevelText_ = new QLabel(QStringLiteral("输出 静音"), center);
+    speakerLevelText_->setObjectName("caption");
+    speakerLevelText_->setMinimumWidth(74);
+
+    levelBar->addWidget(micLevelBar_, 1);
+    levelBar->addWidget(micLevelText_, 0);
+    levelBar->addSpacing(4);
+    levelBar->addWidget(speakerLevelBar_, 1);
+    levelBar->addWidget(speakerLevelText_, 0);
+    deviceArea->addLayout(levelBar);
+
+    centerLayout->addLayout(deviceArea);
 
     QHBoxLayout* mediaBar = new QHBoxLayout();
     mediaBar->setSpacing(8);
@@ -236,6 +296,11 @@ void MainWindow::buildUi() {
                 if (updatingDeviceCombos_ || index < 0) return;
                 emit micDeviceSelected(index);
             });
+    connect(speakerCombo_, qOverload<int>(&QComboBox::currentIndexChanged), this,
+            [this](int index) {
+                if (updatingDeviceCombos_ || index < 0) return;
+                emit speakerDeviceSelected(index);
+            });
 
     QShortcut* sendShortcut = new QShortcut(QKeySequence(QStringLiteral("Ctrl+Return")), this);
     connect(sendShortcut, &QShortcut::activated, this, &MainWindow::onSendClicked);
@@ -302,7 +367,8 @@ void MainWindow::setLocalFrame(const QImage& image) { localView_->setFrame(image
 void MainWindow::setRemoteFrame(const QImage& image) { remoteView_->setFrame(image); }
 
 void MainWindow::setMediaDevices(const QStringList& cameras, int cameraIndex,
-                                 const QStringList& microphones, int micIndex) {
+                                 const QStringList& microphones, int micIndex,
+                                 const QStringList& speakers, int speakerIndex) {
     updatingDeviceCombos_ = true;
 
     cameraCombo_->clear();
@@ -325,7 +391,44 @@ void MainWindow::setMediaDevices(const QStringList& cameras, int cameraIndex,
         micCombo_->setEnabled(true);
     }
 
+    speakerCombo_->clear();
+    if (speakers.isEmpty()) {
+        speakerCombo_->addItem(QStringLiteral("未检测到扬声器"));
+        speakerCombo_->setEnabled(false);
+    } else {
+        speakerCombo_->addItems(speakers);
+        speakerCombo_->setCurrentIndex(qBound(0, speakerIndex, speakers.size() - 1));
+        speakerCombo_->setEnabled(true);
+    }
+
     updatingDeviceCombos_ = false;
+}
+
+void MainWindow::setAudioLevels(double inputLevel, double outputLevel) {
+    // 0.0~1.0 线性映射到 -60dB~0dB；>=0.9 视为接近削波，进度条转红
+    auto apply = [](QProgressBar* bar, QLabel* text, double level,
+                    const QString& prefix, bool muted) {
+        const double shown = muted ? 0.0 : level;
+        const int value = qBound(0, static_cast<int>(shown * 100.0 + 0.5), 100);
+        bar->setValue(value);
+
+        const bool hot = shown >= 0.9;
+        if (bar->property("hot").toBool() != hot) {
+            bar->setProperty("hot", hot);
+            bar->style()->unpolish(bar);
+            bar->style()->polish(bar);
+        }
+
+        if (muted || shown <= 0.02) {
+            text->setText(prefix + QStringLiteral(" 静音"));
+        } else {
+            text->setText(QStringLiteral("%1 %2 dB").arg(prefix).arg(qRound(shown * 60.0 - 60.0)));
+        }
+    };
+
+    apply(micLevelBar_, micLevelText_, inputLevel, QStringLiteral("输入"), false);
+    apply(speakerLevelBar_, speakerLevelText_, outputLevel, QStringLiteral("输出"),
+          model_->speakerMuted());
 }
 
 // ============================ 模型变化 -> 界面 ============================

@@ -11,6 +11,7 @@
 #include <QMediaDevices>
 #include <QMutex>
 #include <QQueue>
+#include <cmath>
 #include <QThread>
 #include <QTimer>
 #include <QUdpSocket>
@@ -37,12 +38,22 @@ constexpr int kAudioBitrate = 128000;
 // 音频播放缓冲上限：约 0.5 秒，超出丢弃最旧数据以保持实时
 constexpr int kMaxPcmBufferBytes = kAudioSampleRate * kAudioChannels * 2 / 2;
 
-QAudioFormat makeAudioFormat() {
-    QAudioFormat fmt;
-    fmt.setSampleRate(kAudioSampleRate);
-    fmt.setChannelCount(kAudioChannels);
-    fmt.setSampleFormat(QAudioFormat::Int16);
-    return fmt;
+// 计算 S16 交错 PCM 的音量电平，返回 0.0~1.0（对应 -60dB~0dB）
+double pcmLevel(const QByteArray& pcm) {
+    const int samples = pcm.size() / static_cast<int>(sizeof(qint16));
+    if (samples <= 0) return 0.0;
+
+    const qint16* data = reinterpret_cast<const qint16*>(pcm.constData());
+    double sum = 0.0;
+    for (int i = 0; i < samples; ++i) {
+        const double v = static_cast<double>(data[i]) / 32768.0;
+        sum += v * v;
+    }
+    const double rms = std::sqrt(sum / samples);
+    if (rms <= 1e-5) return 0.0;
+
+    const double db = 20.0 * std::log10(rms);  // -inf ~ 0
+    return qBound(0.0, (db + 60.0) / 60.0, 1.0);
 }
 }  // namespace
 
@@ -267,6 +278,12 @@ bool MediaEngine::start() {
     connect(statsTimer_, &QTimer::timeout, this, &MediaEngine::emitStats);
     statsTimer_->start();
 
+    // 电平表 20Hz 刷新：平滑上升 + 快速回落，静音时归零
+    levelTimer_ = new QTimer(this);
+    levelTimer_->setInterval(50);
+    connect(levelTimer_, &QTimer::timeout, this, &MediaEngine::emitAudioLevels);
+    levelTimer_->start();
+
     setupAudioOutput();
 
     emit portBound(localPort_);
@@ -291,6 +308,14 @@ void MediaEngine::stopAll() {
         statsTimer_->deleteLater();
         statsTimer_ = nullptr;
     }
+    if (levelTimer_) {
+        levelTimer_->stop();
+        levelTimer_->deleteLater();
+        levelTimer_ = nullptr;
+    }
+    micLevel_ = micTarget_ = 0.0;
+    speakerLevel_ = speakerTarget_ = 0.0;
+    emit audioLevelsChanged(0.0, 0.0);
     if (socket_) {
         socket_->close();
         socket_->deleteLater();
@@ -329,6 +354,14 @@ QStringList MediaEngine::audioInputDeviceNames() {
     return names;
 }
 
+QStringList MediaEngine::audioOutputDeviceNames() {
+    QStringList names;
+    for (const QAudioDevice& device : QMediaDevices::audioOutputs()) {
+        names << (device.description().isEmpty() ? device.id() : device.description());
+    }
+    return names;
+}
+
 void MediaEngine::setCameraDeviceIndex(int index) {
     if (index < -1 || cameraIndex_ == index) return;
     cameraIndex_ = index;
@@ -350,8 +383,21 @@ void MediaEngine::setAudioInputDeviceIndex(int index) {
     }
 }
 
+void MediaEngine::setAudioOutputDeviceIndex(int index) {
+    if (index < -1 || audioOutputIndex_ == index) return;
+    audioOutputIndex_ = index;
+
+    // 正在播放时静默重建 sink：保留 pcmBuffer_ 里已缓存的数据，切换后不会断音
+    if (audioSink_) {
+        audioSink_->stop();
+        audioSink_->deleteLater();
+        audioSink_ = nullptr;
+        setupAudioOutput();
+    }
+}
+
 bool MediaEngine::hasAudioOutput() {
-    return !QMediaDevices::defaultAudioOutput().isNull();
+    return !QMediaDevices::audioOutputs().isEmpty();
 }
 
 // ---------------- 视频发送 ----------------
@@ -396,6 +442,39 @@ void MediaEngine::onWorkerWarning(const QString& message) {
 
 // ---------------- 音频发送 ----------------
 
+namespace {
+
+// QAudioFormat 采样格式 -> 重采样器采样格式
+bool mapSampleFormat(QAudioFormat::SampleFormat src, PcmSampleFormat& dst) {
+    switch (src) {
+        case QAudioFormat::UInt8: dst = PcmSampleFormat::U8; return true;
+        case QAudioFormat::Int16: dst = PcmSampleFormat::S16; return true;
+        case QAudioFormat::Int32: dst = PcmSampleFormat::S32; return true;
+        case QAudioFormat::Float: dst = PcmSampleFormat::F32; return true;
+        default: return false;
+    }
+}
+
+// 优先选择 48kHz 双声道/单声道 S16，其次 44.1kHz/32kHz，最后回退到设备首选格式。
+// 之前的实现只接受 48kHz/双声道/S16，很多笔记本/USB 麦克风（仅单声道或 44.1kHz）
+// 因此被直接拒绝，表现为"麦克风打开失败"。
+QAudioFormat chooseInputFormat(const QAudioDevice& device) {
+    const int rates[] = {48000, 44100, 32000};
+    const int channels[] = {2, 1};
+    for (int rate : rates) {
+        for (int ch : channels) {
+            QAudioFormat f;
+            f.setSampleRate(rate);
+            f.setChannelCount(ch);
+            f.setSampleFormat(QAudioFormat::Int16);
+            if (device.isFormatSupported(f)) return f;
+        }
+    }
+    return device.preferredFormat();
+}
+
+}  // namespace
+
 bool MediaEngine::startAudioSend() {
     if (audioSource_) return true;
 
@@ -413,24 +492,43 @@ bool MediaEngine::startAudioSend() {
         return false;
     }
 
-    const QAudioFormat format = makeAudioFormat();
-    if (!device.isFormatSupported(format)) {
-        emit warning(QStringLiteral("音频输入设备「%1」不支持 48kHz/双声道/16bit，麦克风不可用")
+    // 与设备协商实际可用的采集格式，不再强制要求 48kHz/双声道/S16
+    const QAudioFormat format = chooseInputFormat(device);
+    PcmSampleFormat pcmFormat = PcmSampleFormat::S16;
+    if (format.sampleRate() <= 0 || format.channelCount() <= 0
+        || !mapSampleFormat(format.sampleFormat(), pcmFormat)) {
+        emit warning(QStringLiteral("音频输入设备「%1」没有可用的采集格式，麦克风不可用")
                          .arg(device.description()));
         return false;
     }
+
+    // 设备格式与编码器所需格式不一致时，采集后先重采样到 48kHz/双声道/S16
+    const bool needResample = format.sampleRate() != kAudioSampleRate
+                              || format.channelCount() != kAudioChannels
+                              || pcmFormat != PcmSampleFormat::S16;
+    if (needResample
+        && !audioResampler_.open(format.sampleRate(), format.channelCount(), pcmFormat)) {
+        emit warning(QStringLiteral("音频重采样初始化失败（%1Hz / %2 声道）")
+                         .arg(format.sampleRate())
+                         .arg(format.channelCount()));
+        return false;
+    }
+
     if (!audioEncoder_.open(kAudioSampleRate, kAudioChannels, kAudioBitrate)) {
         emit warning(QStringLiteral("AAC 编码器初始化失败"));
+        audioResampler_.close();
         return false;
     }
 
     audioSource_ = new QAudioSource(device, format, this);
     audioInputIo_ = audioSource_->start();
     if (!audioInputIo_) {
-        emit warning(QStringLiteral("打开音频输入设备失败"));
+        emit warning(QStringLiteral("打开音频输入设备「%1」失败（设备可能被占用）")
+                         .arg(device.description()));
         audioSource_->deleteLater();
         audioSource_ = nullptr;
         audioEncoder_.close();
+        audioResampler_.close();
         return false;
     }
 
@@ -439,7 +537,10 @@ bool MediaEngine::startAudioSend() {
     audioCaptureTimer_->setInterval(20);
     connect(audioCaptureTimer_, &QTimer::timeout, this, [this]() {
         if (!audioInputIo_) return;
-        const QByteArray pcm = audioInputIo_->readAll();
+        QByteArray pcm = audioInputIo_->readAll();
+        if (pcm.isEmpty()) return;
+        micTarget_ = qMax(micTarget_, pcmLevel(pcm));
+        if (audioResampler_.isOpen()) pcm = audioResampler_.convert(pcm);
         if (pcm.isEmpty()) return;
         std::vector<QByteArray> frames;
         audioEncoder_.feed(pcm, frames);
@@ -472,26 +573,57 @@ void MediaEngine::stopAudioSendInternal(bool notify) {
         for (const QByteArray& frame : frames) sendAudioFrame(frame);
         audioEncoder_.close();
     }
+    audioResampler_.close();
+    micTarget_ = 0.0;  // 关闭麦克风后电平表回落到静音
     if (notify) emit audioSendStateChanged(false);
 }
 
 void MediaEngine::setupAudioOutput() {
     if (audioSink_) return;
 
-    const QAudioDevice device = QMediaDevices::defaultAudioOutput();
+    // 指定了设备序号则用该设备，否则用系统默认（-1）
+    const QList<QAudioDevice> outputs = QMediaDevices::audioOutputs();
+    QAudioDevice device;
+    if (audioOutputIndex_ >= 0 && audioOutputIndex_ < outputs.size()) {
+        device = outputs.at(audioOutputIndex_);
+    } else if (!outputs.isEmpty()) {
+        device = QMediaDevices::defaultAudioOutput().isNull() ? outputs.first()
+                                                              : QMediaDevices::defaultAudioOutput();
+    }
     if (device.isNull()) {
         emit warning(QStringLiteral("未检测到音频输出设备，远端声音将无法播放"));
         return;
     }
-    const QAudioFormat format = makeAudioFormat();
-    if (!device.isFormatSupported(format)) {
-        emit warning(QStringLiteral("音频输出设备不支持 48kHz/双声道/16bit，远端声音将无法播放"));
+
+    // 优先 48kHz/双声道/S16；设备不支持时退回其首选格式，解码结果再重采样到该格式
+    QAudioFormat format;
+    format.setSampleRate(kAudioSampleRate);
+    format.setChannelCount(kAudioChannels);
+    format.setSampleFormat(QAudioFormat::Int16);
+    if (!device.isFormatSupported(format)) format = device.preferredFormat();
+
+    PcmSampleFormat pcmFormat = PcmSampleFormat::S16;
+    if (format.sampleRate() <= 0 || format.channelCount() <= 0
+        || !mapSampleFormat(format.sampleFormat(), pcmFormat)) {
+        emit warning(QStringLiteral("音频输出设备「%1」没有可用的播放格式").arg(device.description()));
+        return;
+    }
+
+    const bool needResample = format.sampleRate() != kAudioSampleRate
+                              || format.channelCount() != kAudioChannels
+                              || pcmFormat != PcmSampleFormat::S16;
+    if (needResample
+        && !outputResampler_.open(kAudioSampleRate, kAudioChannels, PcmSampleFormat::S16,
+                                  format.sampleRate(), format.channelCount(), pcmFormat)) {
+        emit warning(QStringLiteral("音频输出重采样初始化失败（%1Hz / %2 声道）")
+                         .arg(format.sampleRate())
+                         .arg(format.channelCount()));
         return;
     }
 
     audioSink_ = new QAudioSink(device, format, this);
     audioSink_->setVolume(speakerMuted_ ? 0.0f : 1.0f);
-    pcmBuffer_ = new PcmBuffer(this);
+    if (!pcmBuffer_) pcmBuffer_ = new PcmBuffer(this);
     audioSink_->start(pcmBuffer_);  // pull 模式：由 sink 从缓冲中取数据
 }
 
@@ -501,6 +633,8 @@ void MediaEngine::teardownAudioOutput() {
         audioSink_->deleteLater();
         audioSink_ = nullptr;
     }
+    outputResampler_.close();
+    speakerTarget_ = 0.0;
     if (pcmBuffer_) {
         pcmBuffer_->deleteLater();
         pcmBuffer_ = nullptr;
@@ -610,7 +744,10 @@ void MediaEngine::onReadyRead() {
                 QByteArray pcm;
                 QString err;
                 if (audioDecoder_.isOpen() && audioDecoder_.decode(frame, pcm, err) && pcmBuffer_) {
-                    pcmBuffer_->append(pcm);
+                    speakerTarget_ = qMax(speakerTarget_, pcmLevel(pcm));
+                    // 扬声器格式与解码格式(48k/2ch/S16)不一致时先重采样
+                    if (outputResampler_.isOpen()) pcm = outputResampler_.convert(pcm);
+                    if (!pcm.isEmpty()) pcmBuffer_->append(pcm);
                 }
             }
         }
@@ -629,4 +766,17 @@ void MediaEngine::emitStats() {
     remoteVideoBytes_ = 0;
 
     emit statsChanged(localFps, localKbps, remoteFps, remoteKbps);
+}
+
+void MediaEngine::emitAudioLevels() {
+    // 上升快（0.5）、回落稍慢（0.25），峰值逐周期衰减，避免电平条抖动
+    micLevel_ += (micTarget_ - micLevel_) * (micTarget_ > micLevel_ ? 0.5 : 0.25);
+    speakerLevel_ += (speakerTarget_ - speakerLevel_) * (speakerTarget_ > speakerLevel_ ? 0.5 : 0.25);
+    micTarget_ *= 0.6;
+    speakerTarget_ *= 0.6;
+
+    if (micLevel_ < 0.005) micLevel_ = 0.0;
+    if (speakerLevel_ < 0.005) speakerLevel_ = 0.0;
+
+    emit audioLevelsChanged(micLevel_, speakerLevel_);
 }

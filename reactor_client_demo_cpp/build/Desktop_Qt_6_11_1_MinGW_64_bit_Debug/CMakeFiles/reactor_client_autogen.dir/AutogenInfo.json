@@ -1,19 +1,19 @@
 {
 	"AUTOGEN_COMMAND_LINE_LENGTH_MAX" : 32000,
-	"BUILD_DIR" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen",
-	"CMAKE_BINARY_DIR" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug",
-	"CMAKE_CURRENT_BINARY_DIR" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug",
-	"CMAKE_CURRENT_SOURCE_DIR" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp",
+	"BUILD_DIR" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen",
+	"CMAKE_BINARY_DIR" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp",
 	"CMAKE_EXECUTABLE" : "D:/Qt/Tools/CMake_64/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
 	[
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/CMakeLists.txt",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/qtcreator-project.cmake",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/package-manager.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/CMakeLists.txt",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/qtcreator-project.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/package-manager.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineSystem.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeSystem.cmake.in",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeSystem.cmake",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/maintenance_tool_provider.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeSystem.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/.qtcreator/cmake-helper/maintenance_tool_provider.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake",
@@ -66,7 +66,7 @@
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeFindBinUtils.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Compiler/GNU-FindBinUtils.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeCXXCompiler.cmake.in",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake",
@@ -81,7 +81,7 @@
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineRCCompiler.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeRCCompiler.cmake.in",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeRCInformation.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeTestRCCompiler.cmake",
@@ -98,7 +98,7 @@
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineCompilerSupport.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Internal/FeatureTesting.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeCXXCompiler.cmake.in",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
 		"D:/Qt/6.11.1/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake",
 		"D:/Qt/6.11.1/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersionImpl.cmake",
@@ -501,82 +501,83 @@
 		"D:/Qt/6.11.1/mingw_64/lib/cmake/Qt6/Qt6Dependencies.cmake",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/GNUInstallDirs.cmake"
 	],
-	"CMAKE_SOURCE_DIR" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp",
+	"CMAKE_SOURCE_DIR" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/deps",
+	"DEP_FILE" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "reactor_client_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/controller/AppController.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/controller/AppController.h",
 			"MU",
 			"KECQXMYYOW/moc_AppController.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.h",
 			"MU",
 			"SVT5AJZPWX/moc_AudioCodec.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.h",
 			"MU",
 			"SVT5AJZPWX/moc_RtpPacket.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.h",
 			"MU",
 			"SVT5AJZPWX/moc_VideoCodec.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/AppModel.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/AppModel.h",
 			"MU",
 			"VNQA4LF4BW/moc_AppModel.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.h",
 			"MU",
 			"VNQA4LF4BW/moc_MediaEngine.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.h",
 			"MU",
 			"VNQA4LF4BW/moc_SignalingClient.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.h",
 			"MU",
 			"3JYSCEOBDA/moc_LoginDialog.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.h",
 			"MU",
 			"3JYSCEOBDA/moc_MainWindow.cpp",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.h",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.h",
 			"MU",
 			"3JYSCEOBDA/moc_VideoWidget.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/include",
-	"MOC_COMPILATION_FILE" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/include",
+	"MOC_COMPILATION_FILE" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"MINGW_HAS_SECURE_API=1",
 		"QT_CORE_LIB",
 		"QT_GUI_LIB",
 		"QT_MULTIMEDIA_LIB",
+		"QT_NEEDS_QMAIN",
 		"QT_NETWORK_LIB",
 		"QT_QML_DEBUG",
 		"QT_WIDGETS_LIB",
@@ -596,11 +597,11 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/controller",
-		"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/controller",
+		"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view",
 		"C:/ffmpeg/ffmpeg-7.1.1/include",
 		"C:/opencv452/include",
 		"D:/Qt/6.11.1/mingw_64/include/QtWidgets",
@@ -637,71 +638,71 @@
 		"-c",
 		"D:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/reactor_client_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 14,
-	"PARSE_CACHE_FILE" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/reactor_client_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/reactor_client_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "D:/Qt/6.11.1/mingw_64/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "D:/Qt/6.11.1/mingw_64/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 11,
-	"SETTINGS_FILE" : "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/reactor_client_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/CMakeFiles/reactor_client_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/controller/AppController.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/controller/AppController.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/main.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/main.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/AudioCodec.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/RtpPacket.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/media/VideoCodec.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/AppModel.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/AppModel.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/MediaEngine.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/model/SignalingClient.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/LoginDialog.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/MainWindow.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/QT_Project/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.cpp",
+			"D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/src/view/VideoWidget.cpp",
 			"MU",
 			null
 		]

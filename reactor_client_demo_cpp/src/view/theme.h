@@ -151,6 +151,22 @@ QComboBox QAbstractItemView {
     outline: none;
 }
 
+/* 音频电平表：绿色正常、接近削波转红 */
+QProgressBar#levelMeter {
+    background-color: #14191F;
+    border: 1px solid #2A313C;
+    border-radius: 5px;
+    min-height: 10px;
+    max-height: 10px;
+}
+QProgressBar#levelMeter::chunk {
+    background-color: #22C55E;
+    border-radius: 4px;
+}
+QProgressBar#levelMeter[hot="true"]::chunk {
+    background-color: #EF4444;
+}
+
 QListWidget {
     background-color: transparent;
     border: none;

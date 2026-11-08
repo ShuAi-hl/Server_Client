@@ -16,6 +16,7 @@ constexpr quint16 kMediaRelayPort = 10001;
 // 记住用户上次选择的硬件（QSettings 键名）
 constexpr auto kKeyCameraIndex = "media/cameraIndex";
 constexpr auto kKeyAudioInputIndex = "media/audioInputIndex";
+constexpr auto kKeyAudioOutputIndex = "media/audioOutputIndex";
 }  // namespace
 
 AppController::AppController(QObject* parent) : QObject(parent) {
@@ -43,24 +44,29 @@ AppController::AppController(QObject* parent) : QObject(parent) {
     connect(media_, &MediaEngine::localFrame, this, &AppController::localFrame);
     connect(media_, &MediaEngine::remoteFrame, this, &AppController::remoteFrame);
     connect(media_, &MediaEngine::statsChanged, this, &AppController::onMediaStats);
+    connect(media_, &MediaEngine::audioLevelsChanged, this, &AppController::audioLevelsChanged);
     connect(media_, &MediaEngine::warning, this, &AppController::onMediaWarning);
     connect(media_, &MediaEngine::videoSendStateChanged,
             this, &AppController::onVideoSendStateChanged);
     connect(media_, &MediaEngine::audioSendStateChanged,
             this, &AppController::onAudioSendStateChanged);
 
-    // 恢复上次选择的摄像头 / 麦克风（设备数量变化时回退到第一个）
+    // 恢复上次选择的摄像头 / 麦克风 / 扬声器（设备数量变化时回退到第一个）
     QSettings settings(QStringLiteral("ReactorClient"), QStringLiteral("reactor_client"));
     const QStringList cams = MediaEngine::cameraDeviceNames();
     const QStringList mics = MediaEngine::audioInputDeviceNames();
+    const QStringList speakers = MediaEngine::audioOutputDeviceNames();
 
     int camIndex = settings.value(kKeyCameraIndex, -1).toInt();
     if (camIndex >= cams.size()) camIndex = cams.isEmpty() ? -1 : 0;
     int micIndex = settings.value(kKeyAudioInputIndex, -1).toInt();
     if (micIndex >= mics.size()) micIndex = mics.isEmpty() ? -1 : 0;
+    int speakerIndex = settings.value(kKeyAudioOutputIndex, -1).toInt();
+    if (speakerIndex >= speakers.size()) speakerIndex = speakers.isEmpty() ? -1 : 0;
 
     media_->setCameraDeviceIndex(camIndex);
     media_->setAudioInputDeviceIndex(micIndex);
+    media_->setAudioOutputDeviceIndex(speakerIndex);
 }
 
 QStringList AppController::cameraDeviceNames() const {
@@ -71,9 +77,15 @@ QStringList AppController::audioInputDeviceNames() const {
     return MediaEngine::audioInputDeviceNames();
 }
 
+QStringList AppController::audioOutputDeviceNames() const {
+    return MediaEngine::audioOutputDeviceNames();
+}
+
 int AppController::cameraDeviceIndex() const { return media_->cameraDeviceIndex(); }
 
 int AppController::audioInputDeviceIndex() const { return media_->audioInputDeviceIndex(); }
+
+int AppController::audioOutputDeviceIndex() const { return media_->audioOutputDeviceIndex(); }
 
 void AppController::selectCameraDevice(int index) {
     if (index < 0) return;
@@ -87,6 +99,13 @@ void AppController::selectAudioInputDevice(int index) {
     media_->setAudioInputDeviceIndex(index);
     QSettings(QStringLiteral("ReactorClient"), QStringLiteral("reactor_client"))
         .setValue(kKeyAudioInputIndex, index);
+}
+
+void AppController::selectAudioOutputDevice(int index) {
+    if (index < 0) return;
+    media_->setAudioOutputDeviceIndex(index);
+    QSettings(QStringLiteral("ReactorClient"), QStringLiteral("reactor_client"))
+        .setValue(kKeyAudioOutputIndex, index);
 }
 
 AppController::~AppController() {

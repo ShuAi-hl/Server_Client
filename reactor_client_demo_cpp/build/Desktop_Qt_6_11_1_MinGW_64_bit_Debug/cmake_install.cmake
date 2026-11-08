@@ -1,4 +1,4 @@
-# Install script for directory: D:/QT_Project/Server_Client/reactor_client_demo_cpp
+# Install script for directory: D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "D:/QT_Project/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "D:/QT_Project/Server_Client/Server_Client/reactor_client_demo_cpp/build/Desktop_Qt_6_11_1_MinGW_64_bit_Debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

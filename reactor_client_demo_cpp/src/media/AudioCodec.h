@@ -65,3 +65,30 @@ private:
     int swrInRate_ = 0;
     int swrInCh_ = 0;
 };
+
+// 采集端采样格式（与 QAudioFormat::SampleFormat 对应）
+enum class PcmSampleFormat { U8, S16, S32, F32 };
+
+// 任意采样率/声道数/采样格式的 PCM -> 目标采样率/声道数/采样格式（默认 48kHz 双声道 S16）
+// 采集方向用于把设备格式对齐到编码器；播放方向用于把解码结果对齐到扬声器格式
+class PcmResampler {
+public:
+    ~PcmResampler();
+
+    bool open(int inSampleRate, int inChannels, PcmSampleFormat inFormat,
+              int outSampleRate = 48000, int outChannels = 2,
+              PcmSampleFormat outFormat = PcmSampleFormat::S16);
+    void close();
+    bool isOpen() const { return swr_ != nullptr; }
+
+    // 输入交错 PCM，输出为目标格式；失败时返回空
+    QByteArray convert(const QByteArray& input);
+
+private:
+    SwrContext* swr_ = nullptr;
+    int inRate_ = 48000;
+    int inChannels_ = 2;
+    PcmSampleFormat inFormat_ = PcmSampleFormat::S16;
+    int outChannels_ = 2;
+    PcmSampleFormat outFormat_ = PcmSampleFormat::S16;
+};

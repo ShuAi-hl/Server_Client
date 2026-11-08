@@ -17,7 +17,9 @@ int main(int argc, char* argv[]) {
     // 硬件设备列表由控制器从媒体层读出后注入视图（视图不直接接触媒体层）
     window.setMediaDevices(controller.cameraDeviceNames(), controller.cameraDeviceIndex(),
                            controller.audioInputDeviceNames(),
-                           controller.audioInputDeviceIndex());
+                           controller.audioInputDeviceIndex(),
+                           controller.audioOutputDeviceNames(),
+                           controller.audioOutputDeviceIndex());
 
     // 视图 -> 控制器（用户操作）
     QObject::connect(&window, &MainWindow::loginRequested,
@@ -44,6 +46,8 @@ int main(int argc, char* argv[]) {
                      &controller, &AppController::selectCameraDevice);
     QObject::connect(&window, &MainWindow::micDeviceSelected,
                      &controller, &AppController::selectAudioInputDevice);
+    QObject::connect(&window, &MainWindow::speakerDeviceSelected,
+                     &controller, &AppController::selectAudioOutputDevice);
 
     // 控制器 -> 视图（模型 / 媒体变化）
     QObject::connect(&controller, &AppController::localFrame,
@@ -52,6 +56,8 @@ int main(int argc, char* argv[]) {
                      &window, &MainWindow::setRemoteFrame);
     QObject::connect(&controller, &AppController::errorOccurred,
                      &window, &MainWindow::showError);
+    QObject::connect(&controller, &AppController::audioLevelsChanged,
+                     &window, &MainWindow::setAudioLevels);
 
     window.show();
     window.showLoginDialog();

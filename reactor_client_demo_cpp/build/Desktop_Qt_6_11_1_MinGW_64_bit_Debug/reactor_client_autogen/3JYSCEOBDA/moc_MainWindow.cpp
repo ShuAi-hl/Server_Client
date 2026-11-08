@@ -59,6 +59,10 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "micToggleRequested",
         "speakerMuteToggleRequested",
         "muted",
+        "cameraDeviceSelected",
+        "index",
+        "micDeviceSelected",
+        "speakerDeviceSelected",
         "showLoginDialog",
         "setLocalFrame",
         "QImage",
@@ -66,6 +70,16 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "setRemoteFrame",
         "showError",
         "message",
+        "setMediaDevices",
+        "cameras",
+        "cameraIndex",
+        "microphones",
+        "micIndex",
+        "speakers",
+        "speakerIndex",
+        "setAudioLevels",
+        "inputLevel",
+        "outputLevel",
         "onConnStateChanged",
         "onRoomsChanged",
         "onRoomChanged",
@@ -116,48 +130,69 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SignalData<void(bool)>(19, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::Bool, 20 },
         }}),
+        // Signal 'cameraDeviceSelected'
+        QtMocHelpers::SignalData<void(int)>(21, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 22 },
+        }}),
+        // Signal 'micDeviceSelected'
+        QtMocHelpers::SignalData<void(int)>(23, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 22 },
+        }}),
+        // Signal 'speakerDeviceSelected'
+        QtMocHelpers::SignalData<void(int)>(24, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 22 },
+        }}),
         // Slot 'showLoginDialog'
-        QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'setLocalFrame'
-        QtMocHelpers::SlotData<void(const QImage &)>(22, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { 0x80000000 | 23, 24 },
+        QtMocHelpers::SlotData<void(const QImage &)>(26, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 27, 28 },
         }}),
         // Slot 'setRemoteFrame'
-        QtMocHelpers::SlotData<void(const QImage &)>(25, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { 0x80000000 | 23, 24 },
+        QtMocHelpers::SlotData<void(const QImage &)>(29, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 27, 28 },
         }}),
         // Slot 'showError'
-        QtMocHelpers::SlotData<void(const QString &)>(26, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 27 },
+        QtMocHelpers::SlotData<void(const QString &)>(30, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 31 },
+        }}),
+        // Slot 'setMediaDevices'
+        QtMocHelpers::SlotData<void(const QStringList &, int, const QStringList &, int, const QStringList &, int)>(32, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QStringList, 33 }, { QMetaType::Int, 34 }, { QMetaType::QStringList, 35 }, { QMetaType::Int, 36 },
+            { QMetaType::QStringList, 37 }, { QMetaType::Int, 38 },
+        }}),
+        // Slot 'setAudioLevels'
+        QtMocHelpers::SlotData<void(double, double)>(39, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Double, 40 }, { QMetaType::Double, 41 },
         }}),
         // Slot 'onConnStateChanged'
-        QtMocHelpers::SlotData<void()>(28, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(42, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onRoomsChanged'
-        QtMocHelpers::SlotData<void()>(29, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(43, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onRoomChanged'
-        QtMocHelpers::SlotData<void()>(30, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(44, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onMembersChanged'
-        QtMocHelpers::SlotData<void()>(31, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(45, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onChatChanged'
-        QtMocHelpers::SlotData<void()>(32, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(46, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onMediaStateChanged'
-        QtMocHelpers::SlotData<void()>(33, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(47, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onMediaStatsChanged'
-        QtMocHelpers::SlotData<void()>(34, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(48, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onStatusTextChanged'
-        QtMocHelpers::SlotData<void(const QString &)>(35, 2, QMC::AccessPrivate, QMetaType::Void, {{
+        QtMocHelpers::SlotData<void(const QString &)>(49, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::QString, 15 },
         }}),
         // Slot 'onRefreshClicked'
-        QtMocHelpers::SlotData<void()>(36, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(50, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onCreateClicked'
-        QtMocHelpers::SlotData<void()>(37, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(51, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onJoinClicked'
-        QtMocHelpers::SlotData<void()>(38, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(52, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onLeaveClicked'
-        QtMocHelpers::SlotData<void()>(39, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(53, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onSendClicked'
-        QtMocHelpers::SlotData<void()>(40, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(54, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -191,23 +226,28 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 7: _t->videoToggleRequested((*reinterpret_cast<std::add_pointer_t<bool>>(_a[1]))); break;
         case 8: _t->micToggleRequested((*reinterpret_cast<std::add_pointer_t<bool>>(_a[1]))); break;
         case 9: _t->speakerMuteToggleRequested((*reinterpret_cast<std::add_pointer_t<bool>>(_a[1]))); break;
-        case 10: _t->showLoginDialog(); break;
-        case 11: _t->setLocalFrame((*reinterpret_cast<std::add_pointer_t<QImage>>(_a[1]))); break;
-        case 12: _t->setRemoteFrame((*reinterpret_cast<std::add_pointer_t<QImage>>(_a[1]))); break;
-        case 13: _t->showError((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 14: _t->onConnStateChanged(); break;
-        case 15: _t->onRoomsChanged(); break;
-        case 16: _t->onRoomChanged(); break;
-        case 17: _t->onMembersChanged(); break;
-        case 18: _t->onChatChanged(); break;
-        case 19: _t->onMediaStateChanged(); break;
-        case 20: _t->onMediaStatsChanged(); break;
-        case 21: _t->onStatusTextChanged((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 22: _t->onRefreshClicked(); break;
-        case 23: _t->onCreateClicked(); break;
-        case 24: _t->onJoinClicked(); break;
-        case 25: _t->onLeaveClicked(); break;
-        case 26: _t->onSendClicked(); break;
+        case 10: _t->cameraDeviceSelected((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 11: _t->micDeviceSelected((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 12: _t->speakerDeviceSelected((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 13: _t->showLoginDialog(); break;
+        case 14: _t->setLocalFrame((*reinterpret_cast<std::add_pointer_t<QImage>>(_a[1]))); break;
+        case 15: _t->setRemoteFrame((*reinterpret_cast<std::add_pointer_t<QImage>>(_a[1]))); break;
+        case 16: _t->showError((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 17: _t->setMediaDevices((*reinterpret_cast<std::add_pointer_t<QStringList>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QStringList>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<int>>(_a[4])),(*reinterpret_cast<std::add_pointer_t<QStringList>>(_a[5])),(*reinterpret_cast<std::add_pointer_t<int>>(_a[6]))); break;
+        case 18: _t->setAudioLevels((*reinterpret_cast<std::add_pointer_t<double>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<double>>(_a[2]))); break;
+        case 19: _t->onConnStateChanged(); break;
+        case 20: _t->onRoomsChanged(); break;
+        case 21: _t->onRoomChanged(); break;
+        case 22: _t->onMembersChanged(); break;
+        case 23: _t->onChatChanged(); break;
+        case 24: _t->onMediaStateChanged(); break;
+        case 25: _t->onMediaStatsChanged(); break;
+        case 26: _t->onStatusTextChanged((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 27: _t->onRefreshClicked(); break;
+        case 28: _t->onCreateClicked(); break;
+        case 29: _t->onJoinClicked(); break;
+        case 30: _t->onLeaveClicked(); break;
+        case 31: _t->onSendClicked(); break;
         default: ;
         }
     }
@@ -232,6 +272,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             return;
         if (QtMocHelpers::indexOfMethod<void (MainWindow::*)(bool )>(_a, &MainWindow::speakerMuteToggleRequested, 9))
             return;
+        if (QtMocHelpers::indexOfMethod<void (MainWindow::*)(int )>(_a, &MainWindow::cameraDeviceSelected, 10))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (MainWindow::*)(int )>(_a, &MainWindow::micDeviceSelected, 11))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (MainWindow::*)(int )>(_a, &MainWindow::speakerDeviceSelected, 12))
+            return;
     }
 }
 
@@ -254,14 +300,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 27)
+        if (_id < 32)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 27;
+        _id -= 32;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 27)
+        if (_id < 32)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 27;
+        _id -= 32;
     }
     return _id;
 }
@@ -324,5 +370,23 @@ void MainWindow::micToggleRequested(bool _t1)
 void MainWindow::speakerMuteToggleRequested(bool _t1)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 9, nullptr, _t1);
+}
+
+// SIGNAL 10
+void MainWindow::cameraDeviceSelected(int _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 10, nullptr, _t1);
+}
+
+// SIGNAL 11
+void MainWindow::micDeviceSelected(int _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 11, nullptr, _t1);
+}
+
+// SIGNAL 12
+void MainWindow::speakerDeviceSelected(int _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 12, nullptr, _t1);
 }
 QT_WARNING_POP

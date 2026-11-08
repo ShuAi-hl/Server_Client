@@ -228,3 +228,94 @@ bool AacDecoder::decode(const QByteArray& aac, QByteArray& pcmS16, QString& err)
     pcmS16.resize(got * 2 * 2);
     return true;
 }
+
+// ============================ 重采样 ============================
+
+namespace {
+
+AVSampleFormat toAvFormat(PcmSampleFormat fmt) {
+    switch (fmt) {
+        case PcmSampleFormat::U8: return AV_SAMPLE_FMT_U8;
+        case PcmSampleFormat::S32: return AV_SAMPLE_FMT_S32;
+        case PcmSampleFormat::F32: return AV_SAMPLE_FMT_FLT;
+        case PcmSampleFormat::S16: break;
+    }
+    return AV_SAMPLE_FMT_S16;
+}
+
+int bytesPerSampleOf(PcmSampleFormat fmt) {
+    switch (fmt) {
+        case PcmSampleFormat::U8: return 1;
+        case PcmSampleFormat::S32: return 4;
+        case PcmSampleFormat::F32: return 4;
+        case PcmSampleFormat::S16: break;
+    }
+    return 2;
+}
+
+}  // namespace
+
+PcmResampler::~PcmResampler() { close(); }
+
+bool PcmResampler::open(int inSampleRate, int inChannels, PcmSampleFormat inFormat,
+                        int outSampleRate, int outChannels, PcmSampleFormat outFormat) {
+    close();
+    if (inSampleRate <= 0 || inChannels <= 0 || outSampleRate <= 0 || outChannels <= 0) {
+        return false;
+    }
+
+    inRate_ = inSampleRate;
+    inChannels_ = inChannels;
+    inFormat_ = inFormat;
+    outChannels_ = outChannels;
+    outFormat_ = outFormat;
+
+    AVChannelLayout inLayout;
+    av_channel_layout_default(&inLayout, inChannels);
+    AVChannelLayout outLayout;
+    av_channel_layout_default(&outLayout, outChannels);
+
+    const int ret = swr_alloc_set_opts2(&swr_, &outLayout, toAvFormat(outFormat), outSampleRate,
+                                        &inLayout, toAvFormat(inFormat), inSampleRate, 0,
+                                        nullptr);
+    av_channel_layout_uninit(&inLayout);
+    av_channel_layout_uninit(&outLayout);
+
+    if (ret < 0 || !swr_) {
+        if (swr_) swr_free(&swr_);
+        return false;
+    }
+    if (swr_init(swr_) < 0) {
+        swr_free(&swr_);
+        return false;
+    }
+    return true;
+}
+
+void PcmResampler::close() {
+    if (swr_) swr_free(&swr_);
+}
+
+QByteArray PcmResampler::convert(const QByteArray& input) {
+    if (!swr_ || input.isEmpty()) return {};
+
+    const int frameBytes = bytesPerSampleOf(inFormat_) * inChannels_;
+    const int inSamples = input.size() / frameBytes;
+    if (inSamples <= 0) return {};
+
+    const int maxOut = swr_get_out_samples(swr_, inSamples);
+    if (maxOut <= 0) return {};
+
+    const int outBytesPerSample = bytesPerSampleOf(outFormat_);
+    QByteArray out(maxOut * outChannels_ * outBytesPerSample, Qt::Uninitialized);
+    uint8_t* outData[1] = { reinterpret_cast<uint8_t*>(out.data()) };
+    const uint8_t* inData[1] = { reinterpret_cast<const uint8_t*>(input.constData()) };
+
+    const int got = swr_convert(swr_, outData, maxOut, inData, inSamples);
+    if (got <= 0) {
+        out.clear();
+        return out;
+    }
+    out.resize(got * outChannels_ * outBytesPerSample);
+    return out;
+}

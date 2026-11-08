@@ -55,13 +55,16 @@ public:
     // 名称列表按系统枚举顺序，摄像头列表下标即 OpenCV 的 capture 索引
     static QStringList cameraDeviceNames();
     static QStringList audioInputDeviceNames();
+    static QStringList audioOutputDeviceNames();
 
     int cameraDeviceIndex() const { return cameraIndex_; }
     int audioInputDeviceIndex() const { return audioInputIndex_; }
+    int audioOutputDeviceIndex() const { return audioOutputIndex_; }
 
-    // 选择设备（-1 表示系统默认）；正在采集时立即重启采集线程/音频流切换设备
+    // 选择设备（-1 表示系统默认）；正在采集/播放时立即切换到新设备
     void setCameraDeviceIndex(int index);
     void setAudioInputDeviceIndex(int index);
+    void setAudioOutputDeviceIndex(int index);
 
     // ---------------- 采集控制 ----------------
     bool startVideoSend();
@@ -82,6 +85,8 @@ signals:
     void localFrame(const QImage& image);
     void remoteFrame(const QImage& image);
     void statsChanged(double localFps, int localKbps, double remoteFps, int remoteKbps);
+    // 输入/输出音频电平，取值 0.0~1.0（对应 -60dB~0dB）
+    void audioLevelsChanged(double inputLevel, double outputLevel);
     void warning(const QString& message);
     void videoSendStateChanged(bool on);
     void audioSendStateChanged(bool on);
@@ -96,6 +101,7 @@ private:
     void setupAudioOutput();
     void teardownAudioOutput();
     void emitStats();
+    void emitAudioLevels();
 
     QUdpSocket* socket_ = nullptr;
     quint16 localPort_ = 0;
@@ -121,9 +127,12 @@ private:
 
     int cameraIndex_ = -1;      // -1 = 系统默认摄像头
     int audioInputIndex_ = -1;  // -1 = 系统默认输入设备
+    int audioOutputIndex_ = -1; // -1 = 系统默认输出设备
 
     AacEncoder audioEncoder_;
     AacDecoder audioDecoder_;
+    PcmResampler audioResampler_;   // 采集格式 -> 48k/2ch/S16，格式不一致时启用
+    PcmResampler outputResampler_;  // 解码结果 48k/2ch/S16 -> 扬声器格式，格式不一致时启用
     QAudioSource* audioSource_ = nullptr;
     QIODevice* audioInputIo_ = nullptr;
     QTimer* audioCaptureTimer_ = nullptr;
@@ -133,6 +142,11 @@ private:
     bool speakerMuted_ = false;
 
     QTimer* statsTimer_ = nullptr;
+    QTimer* levelTimer_ = nullptr;      // 50ms 刷新一次电平表
+    double micLevel_ = 0.0;             // 平滑后的麦克风输入电平
+    double micTarget_ = 0.0;            // 本次采样到的峰值（逐周期衰减）
+    double speakerLevel_ = 0.0;         // 平滑后的扬声器输出电平
+    double speakerTarget_ = 0.0;
     int localVideoFrames_ = 0;
     int localVideoBytes_ = 0;
     int remoteVideoFrames_ = 0;

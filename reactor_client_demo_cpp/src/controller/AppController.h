@@ -24,8 +24,10 @@ public:
     // ---- 硬件设备查询（供视图填充下拉框）----
     QStringList cameraDeviceNames() const;
     QStringList audioInputDeviceNames() const;
+    QStringList audioOutputDeviceNames() const;
     int cameraDeviceIndex() const;
     int audioInputDeviceIndex() const;
+    int audioOutputDeviceIndex() const;
 
 public slots:
     // ---- 连接 ----
@@ -50,11 +52,14 @@ public slots:
     // 切换到指定摄像头 / 麦克风（采集进行中会立即重启采集）
     void selectCameraDevice(int index);
     void selectAudioInputDevice(int index);
+    void selectAudioOutputDevice(int index);
 
 signals:
     void localFrame(const QImage& image);
     void remoteFrame(const QImage& image);
     void errorOccurred(const QString& message);
+    // 音频电平（0.0~1.0），供界面电平表使用
+    void audioLevelsChanged(double inputLevel, double outputLevel);
 
 private slots:
     void onSignalingConnected();
